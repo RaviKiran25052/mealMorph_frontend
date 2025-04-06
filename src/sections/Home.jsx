@@ -6,7 +6,7 @@ import { LuIceCreamBowl, LuLeaf } from 'react-icons/lu';
 import { TbCake, TbMeat, TbSoup } from 'react-icons/tb';
 import { RiDrinks2Line } from 'react-icons/ri';
 import { BiBowlRice } from 'react-icons/bi';
-import { PiForkKnife } from 'react-icons/pi';
+import { PiBowlFood, PiForkKnife } from 'react-icons/pi';
 
 const featuredRecipes = [
 	{
@@ -109,6 +109,12 @@ const categories = [
 		icon: <PiForkKnife className="w-8 h-8" />,
 		count: 78,
 		image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+	},
+	{
+		name: 'Curries',
+		icon: <PiBowlFood className="w-8 h-8" />,
+		count: 42,
+		image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
 	},
 	{
 		name: 'Desserts',

@@ -3,8 +3,9 @@ import { useParams } from 'react-router-dom';
 import {
 	FiClock, FiUsers, FiStar, FiHeart, FiShare2, FiShoppingCart,
 	FiPrinter, FiMinus, FiPlus, FiThermometer, FiDroplet, FiZap, FiScissors, FiCoffee, FiList,
-	FiBookOpen, FiPieChart, FiCheckCircle, FiAlertCircle
+	FiBookOpen, FiPieChart, FiCheckCircle, FiAlertCircle, FiMessageSquare, FiX, FiLoader
 } from 'react-icons/fi';
+import FeedbackModal from '../components/FeedbackModal';
 
 const RecipeDetails = () => {
 	const { id } = useParams();
@@ -14,6 +15,43 @@ const RecipeDetails = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [recipe, setRecipe] = useState(null);
+	const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+	const [feedbacks, setFeedbacks] = useState([
+		{
+			name: "Sarah Johnson",
+			rating: 5,
+			feedback: "This recipe was amazing! The flavors were perfectly balanced and my family loved it.",
+			date: "2024-03-10T10:30:00Z"
+		},
+		{
+			name: "Mike Chen",
+			rating: 4,
+			feedback: "Great recipe, though I added a bit more spice to suit my taste. Will make again!",
+			date: "2024-03-08T15:45:00Z"
+		},
+		{
+			name: "Mike Chen",
+			rating: 4,
+			feedback: "Great recipe, though I added a bit more spice to suit my taste. Will make again!",
+			date: "2024-03-08T15:45:00Z"
+		},
+		{
+			name: "Mike Chen",
+			rating: 4,
+			feedback: "Great recipe, though I added a bit more spice to suit my taste. Will make again!",
+			date: "2024-03-08T15:45:00Z"
+		},
+		{
+			name: "Mike Chen",
+			rating: 4,
+			feedback: "Great recipe, though I added a bit more spice to suit my taste. Will make again!",
+			date: "2024-03-08T15:45:00Z"
+		}
+	]);
+	const [name, setName] = useState('');
+	const [rating, setRating] = useState(0);
+	const [hoveredStar, setHoveredStar] = useState(0);
+	const [feedback, setFeedback] = useState('');
 
 	// Mock recipe data - replace with API data
 	const mockRecipe = {
@@ -101,10 +139,34 @@ const RecipeDetails = () => {
 		return scaledValue.replace(/\.0$/, '');
 	};
 
+	const handleFeedbackSubmit = (newFeedback) => {
+		setFeedbacks(prev => [newFeedback, ...prev]);
+		// Update the recipe's rating and rating count
+		const newRatingCount = recipe.ratingCount + 1;
+		const totalRating = recipe.rating * recipe.ratingCount + newFeedback.rating;
+		const newRating = (totalRating / newRatingCount).toFixed(1);
+		setRecipe(prev => ({
+			...prev,
+			rating: parseFloat(newRating),
+			ratingCount: newRatingCount
+		}));
+	};
+
 	if (isLoading) {
 		return (
-			<div className="flex items-center justify-center min-h-[500px]">
-				<div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+			<div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+				<div className="relative w-32 h-32 mb-8">
+					<div className="absolute inset-0 flex items-center justify-center">
+						<div className="w-24 h-24 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
+					</div>
+					<div className="absolute inset-0 flex items-center justify-center">
+						<FiLoader className="w-12 h-12 text-primary-500 animate-pulse" />
+					</div>
+				</div>
+				<div className="text-center space-y-2">
+					<h2 className="text-2xl font-bold text-gray-800">Preparing Your Recipe</h2>
+					<p className="text-gray-600">Gathering all the delicious details...</p>
+				</div>
 			</div>
 		);
 	}
@@ -430,42 +492,6 @@ const RecipeDetails = () => {
 
 				{/* Right Column - Quick Actions */}
 				<div className="space-y-6">
-					{/* Recipe Stats */}
-					<div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-						<h2 className="text-xl font-bold text-gray-800 mb-4">Recipe Stats</h2>
-						<div className="space-y-4">
-							<div className="flex items-center gap-3">
-								<div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-									<FiClock className="text-primary-500" />
-								</div>
-								<div>
-									<p className="text-sm text-gray-500">Prep Time</p>
-									<p className="font-medium text-gray-800">{recipe.time}</p>
-								</div>
-							</div>
-							<div className="flex items-center gap-3">
-								<div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-									<FiUsers className="text-primary-500" />
-								</div>
-								<div>
-									<p className="text-sm text-gray-500">Servings</p>
-									<p className="font-medium text-gray-800">{recipe.servings} people</p>
-								</div>
-							</div>
-							<div className="flex items-center gap-3">
-								<div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-									<FiStar className="text-primary-500" />
-								</div>
-								<div>
-									<p className="text-sm text-gray-500">Rating</p>
-									<p className="font-medium text-gray-800">
-										{recipe.rating} ({recipe.ratingCount} reviews)
-									</p>
-								</div>
-							</div>
-						</div>
-					</div>
-
 					{/* Quick Actions */}
 					<div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
 						<h2 className="text-xl font-bold text-gray-800 mb-4">Quick Actions</h2>
@@ -477,9 +503,12 @@ const RecipeDetails = () => {
 								<FiShoppingCart />
 								Add to Grocery List
 							</button>
-							<button className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-100 transition-all duration-300 border border-gray-200">
-								<FiShare2 />
-								Share Recipe
+							<button
+								onClick={() => setIsFeedbackModalOpen(true)}
+								className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-primary-50 text-primary-700 rounded-xl hover:bg-primary-100 transition-all duration-300"
+							>
+								<FiMessageSquare />
+								Leave Feedback
 							</button>
 							<button
 								onClick={printRecipe}
@@ -491,20 +520,58 @@ const RecipeDetails = () => {
 						</div>
 					</div>
 
-					{/* Tags */}
-					<div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-						<h2 className="text-xl font-bold text-gray-800 mb-4">Tags</h2>
-						<div className="flex flex-wrap gap-2">
-							{recipe.tags.map((tag) => (
-								<span
-									key={tag}
-									className="px-4 py-2 bg-gray-50 text-gray-700 rounded-full text-sm hover:bg-gray-100 transition-colors duration-300"
-								>
-									{tag}
-								</span>
-							))}
+					{/* Feedbacks Section */}
+					<div className="bg-white rounded-2xl shadow-lg border border-gray-100">
+						<div className="p-6 border-b border-gray-100">
+							<div className="flex justify-between items-center">
+								<h2 className="text-xl font-bold text-gray-800">Recipe Feedbacks</h2>
+								<div className="flex items-center gap-2">
+									<div className="flex items-center gap-1">
+										<FiStar className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+										<span className="font-semibold text-gray-900">{recipe.rating}</span>
+									</div>
+									<span className="text-gray-500">({recipe.ratingCount} reviews)</span>
+								</div>
+							</div>
+						</div>
+
+						{/* Feedbacks List */}
+						<div className="max-h-[400px] overflow-y-auto">
+							<div className="space-y-4 p-6">
+								{feedbacks.map((item, index) => (
+									<div key={index} className="border-b border-gray-100 last:border-0 pb-4 last:pb-0">
+										<div className="flex justify-between items-start">
+											<div>
+												<p className="font-medium text-gray-900">{item.name}</p>
+												<div className="flex items-center gap-1 mt-1">
+													{[...Array(5)].map((_, i) => (
+														<FiStar
+															key={i}
+															className={`w-4 h-4 ${i < item.rating
+																? 'fill-yellow-400 text-yellow-400'
+																: 'text-gray-300'
+																}`}
+														/>
+													))}
+												</div>
+											</div>
+											<span className="text-sm text-gray-500">
+												{new Date(item.date).toLocaleDateString()}
+											</span>
+										</div>
+										<p className="mt-2 text-gray-600">{item.feedback}</p>
+									</div>
+								))}
+							</div>
 						</div>
 					</div>
+
+					{/* Feedback Modal */}
+					<FeedbackModal
+						isOpen={isFeedbackModalOpen}
+						onClose={() => setIsFeedbackModalOpen(false)}
+						onSubmit={handleFeedbackSubmit}
+					/>
 				</div>
 			</div>
 		</div>

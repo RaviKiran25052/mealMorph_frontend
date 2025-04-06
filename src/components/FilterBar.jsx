@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FiFilter, FiX, FiSearch, FiChevronDown } from 'react-icons/fi';
+import FilterLabels from './FilterLabels';
 
 const FilterBar = ({ onFilterChange, onSearch }) => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -15,14 +16,15 @@ const FilterBar = ({ onFilterChange, onSearch }) => {
 		{ value: 'breakfast', label: 'Breakfast' },
 		{ value: 'lunch', label: 'Lunch' },
 		{ value: 'dinner', label: 'Dinner' },
-		{ value: 'snacks', label: 'Snacks' },
 		{ value: 'desserts', label: 'Desserts' },
+		{ value: 'snacks', label: 'Snacks' },
 		{ value: 'vegetarian', label: 'Vegetarian' },
 		{ value: 'non-vegetarian', label: 'Non-Vegetarian' },
 		{ value: 'seafood', label: 'Seafood' },
-		{ value: 'vegan', label: 'Vegan' },
-		{ value: 'gluten-free', label: 'Gluten Free' },
-		{ value: 'keto', label: 'Keto' },
+		{ value: 'soups', label: 'Soups' },
+		{ value: 'smoothies', label: 'Smoothies' },
+		{ value: 'cake', label: 'Cake' },
+		{ value: 'curries', label: 'Curries' }
 	];
 
 	const servingsOptions = [
@@ -37,11 +39,19 @@ const FilterBar = ({ onFilterChange, onSearch }) => {
 	const sortOptions = [
 		{ value: 'rating', label: 'Rating' },
 		{ value: 'servings', label: 'Servings' },
+		{ value: 'time', label: 'Cooking Time' },
+		{ value: 'difficulty', label: 'Difficulty' }
 	];
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		const newFilters = { ...filters, [name]: value };
+		setFilters(newFilters);
+		onFilterChange(newFilters);
+	};
+
+	const handleRemoveFilter = (filterKey) => {
+		const newFilters = { ...filters, [filterKey]: '' };
 		setFilters(newFilters);
 		onFilterChange(newFilters);
 	};
@@ -61,7 +71,7 @@ const FilterBar = ({ onFilterChange, onSearch }) => {
 							value={searchQuery}
 							onChange={(e) => setSearchQuery(e.target.value)}
 							placeholder="Search by ingredients..."
-							className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
+							className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300"
 						/>
 						<FiSearch className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
 					</div>
@@ -92,6 +102,8 @@ const FilterBar = ({ onFilterChange, onSearch }) => {
 				</div>
 			</div>
 
+			<FilterLabels filters={filters} onRemoveFilter={handleRemoveFilter} />
+
 			<div className={`transition-all duration-300 ease-in-out ${isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
 				<div className={`mt-4 p-4 bg-white border border-gray-300 rounded-md transform transition-all duration-300 ${isOpen ? 'translate-y-0' : '-translate-y-4'}`}>
 					<div className="flex justify-between items-center mb-4">
@@ -112,7 +124,7 @@ const FilterBar = ({ onFilterChange, onSearch }) => {
 								name="category"
 								value={filters.category}
 								onChange={handleChange}
-								className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
+								className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300"
 							>
 								{categoryOptions.map((option) => (
 									<option key={option.value} value={option.value}>
@@ -129,7 +141,7 @@ const FilterBar = ({ onFilterChange, onSearch }) => {
 								name="servings"
 								value={filters.servings}
 								onChange={handleChange}
-								className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
+								className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300"
 							>
 								{servingsOptions.map((option) => (
 									<option key={option.value} value={option.value}>

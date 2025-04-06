@@ -1,141 +1,326 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import RecipeCard from '../components/RecipeCard';
 import FilterBar from '../components/FilterBar';
+import { FiSearch } from 'react-icons/fi';
+import { FaLeaf } from 'react-icons/fa';
+import { GiMeat } from 'react-icons/gi';
 
 const Recipes = () => {
+	const location = useLocation();
+	const [isToggleEnabled, setIsToggleEnabled] = useState(false);
 	const [recipes, setRecipes] = useState([
 		{
 			id: 1,
-			title: 'Quick Pasta Primavera',
-			image: 'https://images.unsplash.com/photo-1473093226795-af9932fe5856?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-			time: '30 mins',
-			servings: 4,
-			difficulty: 'Easy',
-			rating: 4.5,
-			diet: 'vegetarian',
+			title: 'Masala Dosa',
+			image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+			cookingTime: '30 mins',
+			servings: 2,
+			difficulty: 'Medium',
+			rating: 4.8,
+			ratingCount: 128,
+			category: 'breakfast',
+			type: 'veg',
+			ingredients: [
+				{ name: 'Rice', quantity: '2 cups' },
+				{ name: 'Urad Dal', quantity: '1 cup' },
+				{ name: 'Potatoes', quantity: '3 medium' }
+			]
 		},
 		{
 			id: 2,
-			title: 'Healthy Buddha Bowl',
-			image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-			time: '20 mins',
-			servings: 2,
-			difficulty: 'Easy',
-			rating: 4.8,
-			diet: 'vegan',
+			title: 'Rajma Chawal',
+			image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+			cookingTime: '45 mins',
+			servings: 4,
+			difficulty: 'Medium',
+			rating: 4.7,
+			ratingCount: 156,
+			category: 'lunch',
+			type: 'veg',
+			ingredients: [
+				{ name: 'Kidney Beans', quantity: '2 cups' },
+				{ name: 'Basmati Rice', quantity: '2 cups' },
+				{ name: 'Onions', quantity: '2 medium' }
+			]
 		},
 		{
 			id: 3,
-			title: 'Chocolate Avocado Mousse',
-			image: 'https://images.unsplash.com/photo-1568708212856-35c36858e5d5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-			time: '15 mins',
+			title: 'Butter Chicken',
+			image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+			cookingTime: '45 mins',
 			servings: 4,
-			difficulty: 'Easy',
-			rating: 4.2,
-			diet: 'vegan',
+			difficulty: 'Medium',
+			rating: 4.9,
+			ratingCount: 215,
+			category: 'dinner',
+			type: 'non-veg',
+			ingredients: [
+				{ name: 'Chicken', quantity: '500g' },
+				{ name: 'Yogurt', quantity: '1 cup' },
+				{ name: 'Tomatoes', quantity: '4 medium' }
+			]
 		},
 		{
 			id: 4,
-			title: 'Grilled Salmon with Asparagus',
-			image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-			time: '25 mins',
-			servings: 2,
+			title: 'Gulab Jamun',
+			image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+			cookingTime: '40 mins',
+			servings: 6,
 			difficulty: 'Medium',
-			rating: 4.7,
-			diet: 'keto',
+			rating: 4.9,
+			ratingCount: 198,
+			category: 'desserts',
+			type: 'veg',
+			ingredients: [
+				{ name: 'Khoya', quantity: '250g' },
+				{ name: 'Sugar', quantity: '2 cups' },
+				{ name: 'Cardamom', quantity: '1 tsp' }
+			]
 		},
 		{
 			id: 5,
-			title: 'Quinoa Stuffed Bell Peppers',
-			image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-			time: '45 mins',
+			title: 'Samosa',
+			image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+			cookingTime: '50 mins',
 			servings: 4,
-			difficulty: 'Medium',
-			rating: 4.3,
-			diet: 'vegetarian',
+			difficulty: 'Hard',
+			rating: 4.6,
+			ratingCount: 167,
+			category: 'snacks',
+			type: 'veg',
+			ingredients: [
+				{ name: 'All-purpose flour', quantity: '2 cups' },
+				{ name: 'Potatoes', quantity: '3 medium' },
+				{ name: 'Peas', quantity: '1/2 cup' }
+			]
 		},
 		{
 			id: 6,
-			title: 'Gluten-Free Banana Bread',
-			image: 'https://images.unsplash.com/photo-1588195538326-6955dda1d1d1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-			time: '60 mins',
-			servings: 8,
-			difficulty: 'Easy',
-			rating: 4.6,
-			diet: 'gluten-free',
+			title: 'Palak Paneer',
+			image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+			cookingTime: '35 mins',
+			servings: 4,
+			difficulty: 'Medium',
+			rating: 4.7,
+			ratingCount: 142,
+			category: 'vegetarian',
+			type: 'veg',
+			ingredients: [
+				{ name: 'Spinach', quantity: '500g' },
+				{ name: 'Paneer', quantity: '200g' },
+				{ name: 'Onions', quantity: '2 medium' }
+			]
 		},
+		{
+			id: 7,
+			title: 'Rogan Josh',
+			image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+			cookingTime: '60 mins',
+			servings: 4,
+			difficulty: 'Hard',
+			rating: 4.8,
+			ratingCount: 189,
+			category: 'non-vegetarian',
+			type: 'non-veg',
+			ingredients: [
+				{ name: 'Lamb', quantity: '500g' },
+				{ name: 'Yogurt', quantity: '1 cup' },
+				{ name: 'Kashmiri Red Chili', quantity: '2 tbsp' }
+			]
+		},
+		{
+			id: 8,
+			title: 'Fish Curry',
+			image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+			cookingTime: '40 mins',
+			servings: 4,
+			difficulty: 'Medium',
+			rating: 4.6,
+			ratingCount: 134,
+			category: 'seafood',
+			type: 'non-veg',
+			ingredients: [
+				{ name: 'Fish', quantity: '500g' },
+				{ name: 'Coconut Milk', quantity: '1 cup' },
+				{ name: 'Tamarind', quantity: '2 tbsp' }
+			]
+		},
+		{
+			id: 9,
+			title: 'Rasam',
+			image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+			cookingTime: '25 mins',
+			servings: 4,
+			difficulty: 'Easy',
+			rating: 4.5,
+			ratingCount: 156,
+			category: 'soups',
+			type: 'veg',
+			ingredients: [
+				{ name: 'Tomatoes', quantity: '4 medium' },
+				{ name: 'Tamarind', quantity: '1 tbsp' },
+				{ name: 'Rasam Powder', quantity: '2 tbsp' }
+			]
+		},
+		{
+			id: 10,
+			title: 'Chicken Curry',
+			image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+			cookingTime: '45 mins',
+			servings: 4,
+			difficulty: 'Medium',
+			rating: 4.8,
+			ratingCount: 178,
+			category: 'curries',
+			type: 'non-veg',
+			ingredients: [
+				{ name: 'Chicken', quantity: '500g' },
+				{ name: 'Onions', quantity: '3 medium' },
+				{ name: 'Tomatoes', quantity: '3 medium' }
+			]
+		}
 	]);
-
+	const [filteredRecipes, setFilteredRecipes] = useState([]);
 	const [filters, setFilters] = useState({
-		diet: '',
-		time: '',
-		difficulty: '',
+		category: '',
+		servings: '',
 		sortBy: 'rating',
+		vegType: 'all',
 	});
+	const [searchQuery, setSearchQuery] = useState('');
+
+	// Read category from URL query parameters
+	useEffect(() => {
+		const searchParams = new URLSearchParams(location.search);
+		const category = searchParams.get('category');
+		if (category) {
+			setFilters(prev => ({ ...prev, category }));
+		}
+	}, [location.search]);
+
+	// Filter and sort recipes
+	useEffect(() => {
+		let result = [...recipes];
+
+		// Apply category filter
+		if (filters.category) {
+			result = result.filter(recipe => recipe.category === filters.category);
+		}
+
+		// Apply servings filter
+		if (filters.servings) {
+			result = result.filter(recipe => recipe.servings === parseInt(filters.servings));
+		}
+
+		// Apply vegType filter
+		if (filters.vegType !== 'all') {
+			result = result.filter(recipe => recipe.type === filters.vegType);
+		}
+
+		// Apply search filter
+		if (searchQuery) {
+			const query = searchQuery.toLowerCase();
+			result = result.filter(recipe =>
+				recipe.title.toLowerCase().includes(query) ||
+				recipe.ingredients.some(ingredient =>
+					ingredient.name.toLowerCase().includes(query)
+				)
+			);
+		}
+
+		// Apply sorting
+		switch (filters.sortBy) {
+			case 'rating':
+				result.sort((a, b) => b.rating - a.rating);
+				break;
+			case 'servings':
+				result.sort((a, b) => a.servings - b.servings);
+				break;
+			case 'time':
+				result.sort((a, b) => a.cookingTime - b.cookingTime);
+				break;
+			case 'difficulty':
+				const difficultyOrder = { 'Easy': 0, 'Medium': 1, 'Hard': 2 };
+				result.sort((a, b) => difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty]);
+				break;
+			default:
+				break;
+		}
+
+		setFilteredRecipes(result);
+	}, [recipes, filters, searchQuery]);
 
 	const handleFilterChange = (newFilters) => {
 		setFilters(newFilters);
 	};
 
-	const handleFavorite = (recipeId) => {
-		setRecipes(recipes.map(recipe => {
-			if (recipe.id === recipeId) {
-				return { ...recipe, isFavorite: !recipe.isFavorite };
-			}
-			return recipe;
-		}));
+	const handleSearch = (query) => {
+		setSearchQuery(query);
 	};
 
-	const filteredAndSortedRecipes = recipes
-		.filter(recipe => {
-			if (filters.diet && recipe.diet !== filters.diet) return false;
-			if (filters.time && parseInt(recipe.time) > parseInt(filters.time)) return false;
-			if (filters.difficulty && recipe.difficulty.toLowerCase() !== filters.difficulty) return false;
-			return true;
-		})
-		.sort((a, b) => {
-			switch (filters.sortBy) {
-				case 'rating':
-					return b.rating - a.rating;
-				case 'time':
-					return parseInt(a.time) - parseInt(b.time);
-				case 'difficulty':
-					const difficultyOrder = { 'Easy': 0, 'Medium': 1, 'Hard': 2 };
-					return difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty];
-				default:
-					return 0;
-			}
-		});
+	const handleToggleClick = () => {
+		if (!isToggleEnabled) {
+			setIsToggleEnabled(true);
+			handleFilterChange({
+				...filters,
+				vegType: 'veg'
+			});
+		} else {
+			handleFilterChange({
+				...filters,
+				vegType: filters.vegType === 'veg' ? 'non-veg' : 'veg'
+			});
+		}
+	};
 
 	return (
-		<div className="max-w-6xl mx-auto">
-			<div className="flex justify-between items-center mb-8">
-				<h1 className="text-3xl font-bold text-gray-900">All Recipes</h1>
-				<div className="text-gray-500">
-					{filteredAndSortedRecipes.length} recipes found
+		<div className="container mx-auto px-4 py-8">
+			<div className="mb-8">
+				<h1 className="text-3xl font-bold text-gray-900 mb-2">Recipes</h1>
+				<p className="text-gray-600">
+					Browse our collection of delicious recipes
+				</p>
+			</div>
+
+			<div className="flex flex-col md:flex-row items-start gap-4 mb-6">
+				<div className="flex-grow">
+					<FilterBar
+						onFilterChange={handleFilterChange}
+						onSearch={handleSearch}
+					/>
+				</div>
+				<div className="flex items-center h-[42px] gap-3 bg-white px-4">
+					<span className="text-sm font-medium text-gray-700">Non-Veg</span>
+					<button
+						onClick={handleToggleClick}
+						className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300"
+						style={{
+							backgroundColor: !isToggleEnabled ? '#d1d5db' : (filters.vegType === 'veg' ? '#22c55e' : '#ef4444')
+						}}
+					>
+						<span
+							className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-300 ${!isToggleEnabled ? 'translate-x-1' : (filters.vegType === 'veg' ? 'translate-x-6' : 'translate-x-1')
+								}`}
+						/>
+					</button>
+					<span className="text-sm font-medium text-gray-700">Veg</span>
 				</div>
 			</div>
 
-			<FilterBar onFilterChange={handleFilterChange} />
-
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-				{filteredAndSortedRecipes.map((recipe) => (
-					<RecipeCard
-						key={recipe.id}
-						recipe={recipe}
-						onFavorite={handleFavorite}
-					/>
-				))}
-			</div>
-
-			{filteredAndSortedRecipes.length === 0 && (
+			{filteredRecipes.length === 0 ? (
 				<div className="text-center py-12">
-					<h3 className="mt-2 text-sm font-medium text-gray-900">
-						No recipes found
-					</h3>
-					<p className="mt-1 text-sm text-gray-500">
-						Try adjusting your filters to find more recipes.
+					<FiSearch className="mx-auto h-12 w-12 text-gray-400" />
+					<h3 className="mt-2 text-lg font-medium text-gray-900">No recipes found</h3>
+					<p className="mt-1 text-gray-500">
+						Try adjusting your search or filter to find what you're looking for.
 					</p>
+				</div>
+			) : (
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+					{filteredRecipes.map((recipe) => (
+						<RecipeCard key={recipe.id} recipe={recipe} />
+					))}
 				</div>
 			)}
 		</div>
