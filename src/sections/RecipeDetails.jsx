@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import {
-	FiClock, FiUsers, FiStar, FiHeart, FiShare2, FiShoppingCart,
+	FiClock, FiUsers, FiStar, FiHeart, FiShoppingCart,
 	FiPrinter, FiMinus, FiPlus, FiThermometer, FiDroplet, FiZap, FiScissors, FiCoffee, FiList,
-	FiBookOpen, FiPieChart, FiCheckCircle, FiAlertCircle, FiMessageSquare, FiX, FiLoader
+	FiBookOpen, FiPieChart, FiCheckCircle, FiAlertCircle, FiMessageSquare, FiLoader
 } from 'react-icons/fi';
 import FeedbackModal from '../components/FeedbackModal';
 
@@ -48,11 +48,7 @@ const RecipeDetails = () => {
 			date: "2024-03-08T15:45:00Z"
 		}
 	]);
-	const [name, setName] = useState('');
-	const [rating, setRating] = useState(0);
-	const [hoveredStar, setHoveredStar] = useState(0);
-	const [feedback, setFeedback] = useState('');
-
+	
 	// Mock recipe data - replace with API data
 	const mockRecipe = {
 		id: 1,

@@ -8,6 +8,7 @@ import GroceryList from './sections/GroceryList';
 import RecipeDetails from './sections/RecipeDetails';
 import Recipes from './sections/Recipes';
 import WhatsInYourFridge from './sections/WhatsInYourFridge';
+import { ToastContainer } from 'react-toastify';
 
 const navItems = [
   { path: '/', icon: <FiHome />, label: 'Home' },
@@ -22,6 +23,7 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-gray-50">
+        <ToastContainer />
         <Navbar items={navItems} />
         <main className="container mx-auto px-4 py-8">
           <Routes>

@@ -3,8 +3,6 @@ import { useLocation } from 'react-router-dom';
 import RecipeCard from '../components/RecipeCard';
 import FilterBar from '../components/FilterBar';
 import { FiSearch } from 'react-icons/fi';
-import { FaLeaf } from 'react-icons/fa';
-import { GiMeat } from 'react-icons/gi';
 
 const Recipes = () => {
 	const location = useLocation();
@@ -238,7 +236,12 @@ const Recipes = () => {
 				result.sort((a, b) => a.servings - b.servings);
 				break;
 			case 'time':
-				result.sort((a, b) => a.cookingTime - b.cookingTime);
+				// Extract numeric value from cooking time string (e.g., "30 mins" -> 30)
+				result.sort((a, b) => {
+					const timeA = parseInt(a.cookingTime);
+					const timeB = parseInt(b.cookingTime);
+					return timeA - timeB;
+				});
 				break;
 			case 'difficulty':
 				const difficultyOrder = { 'Easy': 0, 'Medium': 1, 'Hard': 2 };
@@ -252,7 +255,12 @@ const Recipes = () => {
 	}, [recipes, filters, searchQuery]);
 
 	const handleFilterChange = (newFilters) => {
-		setFilters(newFilters);
+		// Preserve the vegType if it's not being updated
+		setFilters(prevFilters => ({
+			...prevFilters,
+			...newFilters,
+			vegType: newFilters.vegType !== undefined ? newFilters.vegType : prevFilters.vegType
+		}));
 	};
 
 	const handleSearch = (query) => {
@@ -300,7 +308,7 @@ const Recipes = () => {
 						}}
 					>
 						<span
-							className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-300 ${!isToggleEnabled ? 'translate-x-1' : (filters.vegType === 'veg' ? 'translate-x-6' : 'translate-x-1')
+							className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-300 ${!isToggleEnabled ? 'translate-x-1' : (filters.vegType === 'veg' ? 'translate-x-5' : 'translate-x-1')
 								}`}
 						/>
 					</button>
