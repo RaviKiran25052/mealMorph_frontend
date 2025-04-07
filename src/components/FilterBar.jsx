@@ -57,25 +57,26 @@ const FilterBar = ({ onFilterChange, onSearch }) => {
 	};
 
 	const handleSearch = (e) => {
-		e.preventDefault();
-		onSearch(searchQuery);
+		const value = e.target.value;
+		setSearchQuery(value);
+		onSearch(value);
 	};
 
 	return (
 		<div className="mb-6">
 			<div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-				<form onSubmit={handleSearch} className="flex-1 max-w-md">
+				<div className="flex-1 max-w-md">
 					<div className="relative">
 						<input
 							type="text"
 							value={searchQuery}
-							onChange={(e) => setSearchQuery(e.target.value)}
+							onChange={handleSearch}
 							placeholder="Search by ingredients..."
 							className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300"
 						/>
 						<FiSearch className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
 					</div>
-				</form>
+				</div>
 				<div className="flex items-center space-x-4">
 					<button
 						onClick={() => setIsOpen(!isOpen)}

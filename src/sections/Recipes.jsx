@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import RecipeCard from '../components/RecipeCard';
 import FilterBar from '../components/FilterBar';
-import { FiSearch } from 'react-icons/fi';
+import { FiSearch, FiX } from 'react-icons/fi';
 
 const Recipes = () => {
 	const location = useLocation();
@@ -298,20 +298,36 @@ const Recipes = () => {
 						onSearch={handleSearch}
 					/>
 				</div>
-				<div className="flex items-center h-[42px] gap-3 bg-white px-4">
+				<div className={`flex items-center rounded-full h-[42px] gap-3 px-4 ${isToggleEnabled ? 'bg-primary-100' : 'bg-white'}`}>
+					{isToggleEnabled && (
+						<button
+							onClick={() => {
+								setIsToggleEnabled(false);
+								handleFilterChange({
+									...filters,
+									vegType: 'all'
+								});
+							}}
+							className="text-gray-500 hover:text-gray-700 transition-colors duration-200"
+						>
+							<FiX className="h-4 w-4" />
+						</button>
+					)}
 					<span className="text-sm font-medium text-gray-700">Non-Veg</span>
-					<button
-						onClick={handleToggleClick}
-						className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300"
-						style={{
-							backgroundColor: !isToggleEnabled ? '#d1d5db' : (filters.vegType === 'veg' ? '#22c55e' : '#ef4444')
-						}}
-					>
-						<span
-							className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-300 ${!isToggleEnabled ? 'translate-x-1' : (filters.vegType === 'veg' ? 'translate-x-5' : 'translate-x-1')
-								}`}
-						/>
-					</button>
+					<div className="relative flex items-center">
+						<button
+							onClick={handleToggleClick}
+							className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300"
+							style={{
+								backgroundColor: !isToggleEnabled ? '#d1d5db' : (filters.vegType === 'veg' ? '#22c55e' : '#ef4444')
+							}}
+						>
+							<span
+								className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-300 ${!isToggleEnabled ? 'translate-x-1' : (filters.vegType === 'veg' ? 'translate-x-5' : 'translate-x-1')
+									}`}
+							/>
+						</button>
+					</div>
 					<span className="text-sm font-medium text-gray-700">Veg</span>
 				</div>
 			</div>
