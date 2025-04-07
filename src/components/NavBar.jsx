@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { FiMenu, FiX, FiUser, FiLogOut } from 'react-icons/fi';
+import { FiMenu, FiX, FiUser, FiLogOut, FiShoppingCart } from 'react-icons/fi';
 import AuthPopup from './AuthPopup';
 import { FaUser } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -12,6 +12,7 @@ const Navbar = ({ items }) => {
 	const [isAuthPopupOpen, setIsAuthPopupOpen] = useState(false);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [user, setUser] = useState(null);
+	const [groceryListCount, setGroceryListCount] = useState(0);
 
 	useEffect(() => {
 		// Check if user is logged in on component mount
@@ -19,6 +20,8 @@ const Navbar = ({ items }) => {
 		if (storedUser) {
 			setUser(JSON.parse(storedUser));
 			setIsLoggedIn(true);
+			// TODO: Fetch actual grocery list count from API
+			setGroceryListCount(3); // Temporary hardcoded value
 		}
 	}, []);
 
@@ -43,31 +46,55 @@ const Navbar = ({ items }) => {
 		<>
 			<nav className="bg-white shadow-lg sticky top-0 z-50">
 				<div className="max-w-7xl mx-auto px-4">
-					<div className="flex justify-between items-center h-16">
+					<div className="flex justify-between items-center">
 						{/* Logo and Desktop Navigation */}
-						<div className="flex-shrink-0">
-							<Link to="/" className="text-2xl font-bold text-primary-600 hover:text-primary-700 transition-colors duration-200">
-								MealMorph
+						<div className="flex-shrink-0 mt-2 mb-4">
+							<Link to="/">
+								<img src="/mealmorph.png" alt="MealMorph" className="md:h-20 h-14" />
 							</Link>
 						</div>
 						<div className="hidden md:flex items-center ml-10 space-x-8">
-							{items.map((item) => (
-								<Link
-									key={item.path}
-									to={item.path}
-									className={`flex items-center space-x-2 text-sm font-medium transition-colors duration-200 ${location.pathname === item.path
-										? 'text-primary-600'
-										: 'text-gray-600 hover:text-gray-900'
-										}`}
-								>
-									<span className="text-lg">{item.icon}</span>
-									<span>{item.label}</span>
-								</Link>
-							))}
+							{items.map((item) => {
+								// Skip Grocery List, My Kitchen, and Meal Plan if not logged in
+								if ((item.label === 'Grocery List' || item.label === 'My Kitchen' || item.label === 'Meal Plan') && !isLoggedIn) {
+									return null;
+								}
+								// Always skip Grocery List as it's now an icon
+								if (item.label === 'Grocery List') {
+									return null;
+								}
+								return (
+									<Link
+										key={item.path}
+										to={item.path}
+										className={`flex items-center space-x-2 font-medium transition-colors duration-200 ${location.pathname === item.path
+											? 'text-primary-600'
+											: 'text-gray-600 hover:text-gray-900'
+											}`}
+									>
+										<span className="text-lg">{item.icon}</span>
+										<span>{item.label}</span>
+									</Link>
+								);
+							})}
 						</div>
 
 						{/* Right side items */}
 						<div className="flex items-center space-x-4">
+							{/* Grocery List Icon */}
+							{isLoggedIn && (
+								<Link
+									to="/grocery-list"
+									className="relative p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
+								>
+									<FiShoppingCart className="text-gray-600 text-xl" />
+									{groceryListCount > 0 && (
+										<span className="absolute -top-1 -right-1 bg-primary-600 text-white text-sm font-semibold rounded-full h-5 w-5 flex items-center justify-center">
+											{groceryListCount}
+										</span>
+									)}
+								</Link>
+							)}
 							{/* Profile Menu */}
 							<div className="relative">
 								{isLoggedIn ? (
@@ -178,20 +205,30 @@ const Navbar = ({ items }) => {
 
 						{/* Menu items */}
 						<div className="flex-1 overflow-y-auto py-4">
-							{items.map((item) => (
-								<Link
-									key={item.path}
-									to={item.path}
-									className={`flex items-center space-x-3 px-4 py-3 text-base font-medium transition-colors duration-200 ${location.pathname === item.path
-										? 'text-primary-600 bg-primary-50'
-										: 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-										}`}
-									onClick={() => setIsMobileMenuOpen(false)}
-								>
-									<span className="text-lg">{item.icon}</span>
-									<span>{item.label}</span>
-								</Link>
-							))}
+							{items.map((item) => {
+								// Skip Grocery List, My Kitchen, and Meal Plan if not logged in
+								if ((item.label === 'Grocery List' || item.label === 'My Kitchen' || item.label === 'Meal Plan') && !isLoggedIn) {
+									return null;
+								}
+								// Always skip Grocery List as it's now an icon
+								if (item.label === 'Grocery List') {
+									return null;
+								}
+								return (
+									<Link
+										key={item.path}
+										to={item.path}
+										className={`flex items-center space-x-3 px-4 py-3 text-base font-medium transition-colors duration-200 ${location.pathname === item.path
+											? 'text-primary-600 bg-primary-50'
+											: 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+											}`}
+										onClick={() => setIsMobileMenuOpen(false)}
+									>
+										<span className="text-lg">{item.icon}</span>
+										<span>{item.label}</span>
+									</Link>
+								);
+							})}
 						</div>
 
 						{/* Menu footer */}
