@@ -1,5 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { FiHome, FiCalendar, FiShoppingCart, FiBookOpen, FiBox, FiCoffee } from 'react-icons/fi';
+import { ToastContainer } from 'react-toastify';
+import { FiHome, FiShoppingCart } from 'react-icons/fi';
+import { TbFridge, TbToolsKitchen3 } from 'react-icons/tb';
+import { MdOutlineCalendarMonth, MdOutlineSoupKitchen } from 'react-icons/md';
 import Navbar from './components/Navbar';
 import Home from './sections/Home';
 import MyKitchen from './sections/MyKitchen';
@@ -8,14 +11,13 @@ import GroceryList from './sections/GroceryList';
 import RecipeDetails from './sections/RecipeDetails';
 import Recipes from './sections/Recipes';
 import WhatsInYourFridge from './sections/WhatsInYourFridge';
-import { ToastContainer } from 'react-toastify';
 
 const navItems = [
   { path: '/', icon: <FiHome />, label: 'Home' },
-  { path: '/recipes', icon: <FiBookOpen />, label: 'Recipes' },
-  { path: '/whats-in-your-fridge', icon: <FiBox />, label: "What's in Your Fridge?" },
-  { path: '/my-kitchen', icon: <FiCoffee />, label: 'My Kitchen' },
-  { path: '/meal-plan', icon: <FiCalendar />, label: 'Meal Plan' },
+  { path: '/recipes', icon: <TbToolsKitchen3 />, label: 'Recipes' },
+  { path: '/whats-in-your-fridge', icon: <TbFridge />, label: "What's in Your Fridge?" },
+  { path: '/my-kitchen', icon: <MdOutlineSoupKitchen />, label: 'My Kitchen' },
+  { path: '/meal-plan', icon: <MdOutlineCalendarMonth />, label: 'Meal Plan' },
   { path: '/grocery-list', icon: <FiShoppingCart />, label: 'Grocery List' },
 ];
 

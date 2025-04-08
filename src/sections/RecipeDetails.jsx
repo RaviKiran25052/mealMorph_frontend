@@ -48,7 +48,7 @@ const RecipeDetails = () => {
 			date: "2024-03-08T15:45:00Z"
 		}
 	]);
-	
+
 	// Mock recipe data - replace with API data
 	const mockRecipe = {
 		id: 1,
@@ -209,7 +209,7 @@ const RecipeDetails = () => {
 									: 'bg-white/20 text-white hover:bg-white/30'
 									}`}
 							>
-								<FiHeart size={24} className={isFavorite ? 'animate-bounce' : ''} />
+								<FiHeart size={24} />
 							</button>
 							<button
 								onClick={printRecipe}
@@ -397,7 +397,7 @@ const RecipeDetails = () => {
 													value: getScaledNutrition(recipe.nutrition.protein),
 													icon: <FiDroplet />,
 													color: 'text-blue-500',
-													bgColor: 'bg-blue-50',
+													bgColor: 'bg-primary-50',
 													description: 'Essential for muscle growth',
 													unit: 'g'
 												},
