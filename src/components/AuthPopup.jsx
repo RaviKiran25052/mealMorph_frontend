@@ -34,7 +34,18 @@ export default function AuthPopup({ isOpen, onClose, onAuthSuccess }) {
 		setIsSignUp(!isSignUp);
 		setSignUpData({ email: "", password: "", confirmPassword: "", firstName: "", lastName: "" });
 		setLoginData({ email: "", password: "" });
+		setShowPassword(false);
+		setShowConfirmPassword(false);
 	};
+
+	const handleClose = () => {
+		setSignUpData({ email: "", password: "", confirmPassword: "", firstName: "", lastName: "" });
+		setLoginData({ email: "", password: "" });
+		setShowPassword(false);
+		setShowConfirmPassword(false);
+		setIsSignUp(false);
+		onClose();
+	}
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -66,7 +77,7 @@ export default function AuthPopup({ isOpen, onClose, onAuthSuccess }) {
 					theme: "dark",
 				});
 				onAuthSuccess(data.user);
-				onClose();
+				handleClose();
 			} else {
 				// Login existing user
 				const { data } = await axios.post(`${API_BASE_URL}/login`, {
@@ -82,10 +93,8 @@ export default function AuthPopup({ isOpen, onClose, onAuthSuccess }) {
 					autoClose: 3000,
 					theme: "dark",
 				});
-				setSignUpData({ email: "", password: "", confirmPassword: "", firstName: "", lastName: "" });
-				setLoginData({ email: "", password: "" });
 				onAuthSuccess(data.user);
-				onClose();
+				handleClose();
 			}
 		} catch (error) {
 			const errorMessage = error.response?.data?.message || error.message || 'An error occurred';
@@ -108,14 +117,14 @@ export default function AuthPopup({ isOpen, onClose, onAuthSuccess }) {
 				{/* Overlay */}
 				<div
 					className="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
-					onClick={onClose}
+					onClick={handleClose}
 				></div>
 
 				{/* Popup Card */}
 				<div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl transform transition-all duration-300 scale-100">
 					{/* Close Button */}
 					<button
-						onClick={onClose}
+						onClick={handleClose}
 						className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors duration-200"
 					>
 						<FaTimes className="w-5 h-5" />
@@ -198,7 +207,7 @@ export default function AuthPopup({ isOpen, onClose, onAuthSuccess }) {
 									onClick={() => setShowPassword(!showPassword)}
 									className="absolute right-3 top-4 text-gray-400 hover:text-gray-600 transition-colors duration-200"
 								>
-									{showPassword ? <FaEyeSlash /> : <FaEye />}
+									{showPassword ? <FaEye /> : <FaEyeSlash />}
 								</button>
 							</div>
 
@@ -221,7 +230,7 @@ export default function AuthPopup({ isOpen, onClose, onAuthSuccess }) {
 										onClick={() => setShowConfirmPassword(!showConfirmPassword)}
 										className="absolute right-3 top-4 text-gray-400 hover:text-gray-600 transition-colors duration-200"
 									>
-										{showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+										{showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
 									</button>
 								</div>
 							)}

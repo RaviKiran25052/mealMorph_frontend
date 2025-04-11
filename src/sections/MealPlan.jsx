@@ -275,8 +275,6 @@ const MealPlan = () => {
 					setSelectedMealType(null);
 				}}
 				onSelect={(recipe) => handleAddMeal(selectedDay, selectedMealType, recipe)}
-				selectedDay={selectedDay}
-				selectedMealType={selectedMealType}
 				recipes={recipeSuggestions}
 			/>
 		</div>

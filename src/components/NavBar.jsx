@@ -35,6 +35,7 @@ const Navbar = ({ items }) => {
 		localStorage.removeItem('user');
 		setUser(null);
 		setIsLoggedIn(false);
+		setIsProfileMenuOpen(false);
 		toast.success('Logged out successfully!', {
 			position: "top-center",
 			autoClose: 3000,
@@ -109,31 +110,37 @@ const Navbar = ({ items }) => {
 										</button>
 										{/* Profile Dropdown */}
 										{isProfileMenuOpen && (
-											<div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
-												<div className="px-4 py-2 border-b border-gray-200">
-													<p className="text-sm font-medium text-gray-900">
-														{user?.firstName} {user?.lastName}
-													</p>
-													<p className="text-xs text-gray-500">{user?.email}</p>
+											<>
+												<div 
+													className="fixed inset-0 z-40"
+													onClick={() => setIsProfileMenuOpen(false)}
+												/>
+												<div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+													<div className="px-4 py-2 border-b border-gray-200">
+														<p className="text-sm font-medium text-gray-900">
+															{user?.firstName} {user?.lastName}
+														</p>
+														<p className="text-xs text-gray-500">{user?.email}</p>
+													</div>
+													<div className="py-1">
+														<Link
+															to="/profile"
+															className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+															onClick={() => setIsProfileMenuOpen(false)}
+														>
+															<FiUser className="mr-2" />
+															Profile
+														</Link>
+														<button
+															className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+															onClick={handleLogout}
+														>
+															<FiLogOut className="mr-2" />
+															Sign out
+														</button>
+													</div>
 												</div>
-												<div className="py-1">
-													<Link
-														to="/profile"
-														className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-														onClick={() => setIsProfileMenuOpen(false)}
-													>
-														<FiUser className="mr-2" />
-														Profile
-													</Link>
-													<button
-														className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-														onClick={handleLogout}
-													>
-														<FiLogOut className="mr-2" />
-														Sign out
-													</button>
-												</div>
-											</div>
+											</>
 										)}
 									</>
 								) : (

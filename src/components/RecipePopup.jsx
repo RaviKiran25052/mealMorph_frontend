@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import { FiX, FiSearch, FiClock, FiUsers, FiStar, FiChevronDown } from 'react-icons/fi';
+import { FiX, FiSearch, FiClock, FiUsers, FiStar, FiChevronDown, FiPlus } from 'react-icons/fi';
 
 const RecipePopup = ({
 	isOpen,
 	onClose,
 	onSelect,
-	selectedDay,
-	selectedMealType,
 	recipes = [],
 }) => {
 	const [searchQuery, setSearchQuery] = useState('');
@@ -96,7 +94,7 @@ const RecipePopup = ({
 
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-			<div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[80vh] overflow-hidden transform transition-all duration-300">
+			<div className="flex flex-col bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[80vh] overflow-hidden transform transition-all duration-300">
 				{/* Header */}
 				<div className="p-4 border-b border-gray-200">
 					<div className="flex justify-between items-center">
@@ -202,7 +200,7 @@ const RecipePopup = ({
 				</div>
 
 				{/* Content */}
-				<div className="p-4 overflow-y-auto max-h-[50vh]">
+				<div className="p-4 overflow-y-auto flex-1">
 					{error && (
 						<div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600">
 							{error}
@@ -229,10 +227,20 @@ const RecipePopup = ({
 											alt={recipe.title}
 											className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
 										/>
+										{/* Plus button */}
+										<button
+											onClick={() => handleRecipeSelect(recipe)}
+											className="absolute top-4 right-4 p-2 bg-white/90 hover:bg-primary-600 text-primary-600 hover:text-white rounded-lg transition-colors duration-200 shadow-md z-10"
+										>
+											<FiPlus className="h-5 w-5" />
+										</button>
 										{/* Overlay with recipe details */}
 										<div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent p-4 flex flex-col justify-end">
-											<div className="absolute top-4 right-4">
-												<div className={`w-5 h-5 bg-white flex items-center justify-center border-2 ${recipe.vegType === 'veg'
+											<div className="flex items-center gap-2 mb-2">
+												<h3 className="text-xl font-semibold text-white">
+													{recipe.title}
+												</h3>
+												<div className={`w-4 h-4 bg-white flex items-center justify-center border ${recipe.vegType === 'veg'
 													? 'border-green-500'
 													: 'border-red-500'
 													}`}>
@@ -243,9 +251,6 @@ const RecipePopup = ({
 													)}
 												</div>
 											</div>
-											<h3 className="text-xl font-semibold text-white mb-2">
-												{recipe.title}
-											</h3>
 											<div className="flex flex-wrap gap-3">
 												<div className="flex items-center text-white/90">
 													<FiClock className="mr-1 text-blue-300" />
@@ -262,14 +267,6 @@ const RecipePopup = ({
 												</div>
 											</div>
 										</div>
-									</div>
-									<div className="p-4">
-										<button
-											onClick={() => handleRecipeSelect(recipe)}
-											className="w-full px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 text-sm font-medium"
-										>
-											Add to {selectedDay} {selectedMealType}
-										</button>
 									</div>
 								</div>
 							))}

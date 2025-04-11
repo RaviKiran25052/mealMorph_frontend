@@ -5,19 +5,18 @@ const FeedbackModal = ({ isOpen, onClose, onSubmit }) => {
 	const [name, setName] = useState('');
 	const [rating, setRating] = useState(0);
 	const [hoveredStar, setHoveredStar] = useState(0);
-	const [feedback, setFeedback] = useState('');
+	const [description, setDescription] = useState('');
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		onSubmit({
 			name,
 			rating,
-			feedback,
-			date: new Date().toISOString()
+			description
 		});
 		setName('');
 		setRating(0);
-		setFeedback('');
+		setDescription('');
 		onClose();
 	};
 
@@ -84,8 +83,8 @@ const FeedbackModal = ({ isOpen, onClose, onSubmit }) => {
 								Your Feedback
 							</label>
 							<textarea
-								value={feedback}
-								onChange={(e) => setFeedback(e.target.value)}
+								value={description}
+								onChange={(e) => setDescription(e.target.value)}
 								rows={4}
 								className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
 								placeholder="Share your experience with this recipe..."
