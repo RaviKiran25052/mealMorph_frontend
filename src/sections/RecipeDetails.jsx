@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
 	FiClock, FiUsers, FiStar, FiHeart, FiShoppingCart,
 	FiPrinter, FiMinus, FiPlus, FiThermometer, FiDroplet, FiZap, FiScissors, FiCoffee, FiList,
-	FiBookOpen, FiPieChart, FiCheckCircle, FiAlertCircle, FiMessageSquare, FiLoader
+	FiBookOpen, FiPieChart, FiCheckCircle, FiAlertCircle, FiLoader, FiPlay
 } from 'react-icons/fi';
 import FeedbackModal from '../components/FeedbackModal';
 
 const RecipeDetails = () => {
 	const { id } = useParams();
+	const navigate = useNavigate();
 	const [servings, setServings] = useState(4);
 	const [isFavorite, setIsFavorite] = useState(false);
 	const [activeTab, setActiveTab] = useState('ingredients');
@@ -16,6 +17,9 @@ const RecipeDetails = () => {
 	const [error, setError] = useState(null);
 	const [recipe, setRecipe] = useState(null);
 	const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+	const [checkedIngredients, setCheckedIngredients] = useState({});
+	const [showSubstitutions, setShowSubstitutions] = useState(false);
+	const [areAllIngredientsAvailable, setAreAllIngredientsAvailable] = useState(false);
 	const [feedbacks, setFeedbacks] = useState([
 		{
 			name: "Sarah Johnson",
@@ -146,6 +150,38 @@ const RecipeDetails = () => {
 			rating: parseFloat(newRating),
 			ratingCount: newRatingCount
 		}));
+	};
+
+	const handleIngredientCheck = (ingredientId) => {
+		setCheckedIngredients(prev => {
+			const updated = { ...prev, [ingredientId]: !prev[ingredientId] };
+
+			// Check if all ingredients are available
+			if (recipe && recipe.ingredients) {
+				const allChecked = recipe.ingredients.every(ing => updated[ing.name] === true);
+				setAreAllIngredientsAvailable(allChecked);
+			}
+
+			return updated;
+		});
+	};
+
+	const handleStartCooking = () => {
+		// Navigate to the cooking assistant page with the recipe ID
+		navigate(`/cooking-assistant/${id}`);
+	};
+
+	// Get ingredient substitutions - mock data for now
+	const getSubstitutions = (ingredient) => {
+		const substitutions = {
+			'spaghetti': ['fettuccine', 'linguine', 'penne'],
+			'pancetta': ['bacon', 'ham', 'prosciutto'],
+			'pecorino cheese': ['parmesan', 'romano', 'asiago'],
+			'parmesan': ['pecorino', 'grana padano', 'asiago'],
+			'black pepper': ['white pepper', 'cayenne (small amount)'],
+		};
+
+		return substitutions[ingredient.toLowerCase()] || [];
 	};
 
 	if (isLoading) {
@@ -338,25 +374,157 @@ const RecipeDetails = () => {
 
 						<div className="p-4">
 							{activeTab === 'ingredients' && (
-								<div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-									{recipe.ingredients.map((ingredient, index) => (
-										<div
-											key={index}
-											className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300 group"
-										>
-											<div className="w-7 h-7 rounded-full bg-primary-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-												<FiCheckCircle className="text-primary-500" />
+								<div className="space-y-4 transition-all duration-300 animate-fadeIn">
+									<div className="flex items-center justify-between">
+										<div className="flex items-center gap-2 p-2">
+											<div className="relative">
+												<input
+													type="checkbox"
+													id="select-all-ingredients"
+													checked={recipe.ingredients.every(ing => checkedIngredients[ing.name])}
+													onChange={() => {
+														const allChecked = recipe.ingredients.every(ing => checkedIngredients[ing.name]);
+														const newCheckedState = {};
+														recipe.ingredients.forEach(ing => {
+															newCheckedState[ing.name] = !allChecked;
+														});
+														setCheckedIngredients(newCheckedState);
+														setAreAllIngredientsAvailable(!allChecked);
+													}}
+													className="opacity-0 absolute h-5 w-5 cursor-pointer"
+												/>
+												<div className={`border-2 rounded w-5 h-5 flex flex-shrink-0 justify-center items-center mr-2 focus-within:border-primary-500 transition-colors duration-200 ${recipe.ingredients.every(ing => checkedIngredients[ing.name])
+													? 'bg-primary-500 border-primary-500'
+													: 'border-gray-300'
+													}`}>
+													<svg
+														className={`fill-current w-3 h-3 text-white pointer-events-none transition-opacity duration-200 ${recipe.ingredients.every(ing => checkedIngredients[ing.name]) ? 'opacity-100' : 'opacity-0'
+															}`}
+														viewBox="0 0 20 20"
+													>
+														<path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+													</svg>
+												</div>
 											</div>
-											<div className="flex-1">
-												<h3 className="font-medium text-gray-800 capitalize group-hover:text-primary-600 transition-colors duration-300">
-													{ingredient.name}
-												</h3>
-												<p className="text-sm text-gray-500">
-													{getScaledAmount(ingredient.amount, ingredient.unit)}
-												</p>
-											</div>
+											<label htmlFor="select-all-ingredients" className="text-primary-500 font-medium cursor-pointer hover:text-primary-700 transition-colors duration-200">
+												Check All Ingredients
+											</label>
 										</div>
-									))}
+
+										{!areAllIngredientsAvailable && 
+										<button
+											onClick={() => setShowSubstitutions(!showSubstitutions)}
+											className={`px-4 py-2 rounded-full flex items-center gap-2 transition-all duration-300 ${showSubstitutions
+												? 'bg-primary-100 text-primary-700 shadow-inner'
+												: 'bg-gray-100 text-gray-700 hover:bg-primary-50 hover:text-primary-600 shadow-sm hover:shadow'
+												}`}
+										>
+											<span className="text-sm font-medium">
+												{showSubstitutions ? 'Hide Substitutions' : 'Show Substitutions'}
+											</span>
+											<span className={`w-5 h-5 rounded-full flex items-center justify-center ${showSubstitutions ? 'bg-primary-200' : 'bg-gray-200'
+												} transition-transform duration-300 transform ${showSubstitutions ? 'rotate-180' : 'rotate-0'
+												}`}>
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													width="14"
+													height="14"
+													viewBox="0 0 24 24"
+													fill="none"
+													stroke="currentColor"
+													strokeWidth="2"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													className={`transition-transform duration-300 ${showSubstitutions ? 'transform rotate-180' : ''}`}
+												>
+													<polyline points="6 9 12 15 18 9"></polyline>
+												</svg>
+											</span>
+										</button>
+										}
+									</div>
+									<div className="w-full h-[2px] bg-primary-200"></div>
+									<ul className="space-y-1">
+										{recipe.ingredients.map((ingredient, index) => (
+											<li
+												key={index}
+												className="flex items-start gap-3 p-2 bg-white hover:bg-gray-50 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1"
+												style={{ animationDelay: `${index * 50}ms` }}
+											>
+												<div className="relative">
+													<input
+														type="checkbox"
+														id={`ingredient-${index}`}
+														checked={checkedIngredients[ingredient.name] || false}
+														onChange={() => handleIngredientCheck(ingredient.name)}
+														className="opacity-0 absolute h-5 w-5 cursor-pointer"
+													/>
+													<div className={`border-2 rounded w-5 h-5 flex flex-shrink-0 justify-center items-center mr-2 mt-1 focus-within:border-primary-500 transition-colors duration-200 ${checkedIngredients[ingredient.name] ? 'bg-primary-500 border-primary-500' : 'border-gray-300'
+														}`}>
+														<svg className={`fill-current w-3 h-3 text-white pointer-events-none transition-opacity duration-200 ${checkedIngredients[ingredient.name] ? 'opacity-100' : 'opacity-0'
+															}`} viewBox="0 0 20 20">
+															<path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+														</svg>
+													</div>
+												</div>
+												<div className="flex-1">
+													<div className="flex items-center justify-between group">
+														<span className={`text-lg transition-all duration-300 ${checkedIngredients[ingredient.name]
+															? 'line-through text-gray-400 transform scale-95'
+															: 'font-medium text-gray-800 group-hover:text-primary-600'
+															}`}>
+															{ingredient.name}
+														</span>
+														<span className="text-gray-600 font-mono bg-gray-100 px-2 py-1 rounded-lg text-sm">
+															{getScaledAmount(ingredient.amount, ingredient.unit)}
+														</span>
+													</div>
+
+													{showSubstitutions && !checkedIngredients[ingredient.name] && (
+														<div
+															className="mt-3 overflow-hidden transition-all duration-500"
+															style={{
+																maxHeight: getSubstitutions(ingredient.name).length > 0 ? '200px' : '60px',
+																opacity: 1
+															}}
+														>
+															{getSubstitutions(ingredient.name).length > 0 ? (
+																<div className="text-sm bg-primary-50 p-3 rounded-lg border-l-2 border-primary-500 animate-fadeIn">
+																	<ul className="space-y-1">
+																		{getSubstitutions(ingredient.name).map((sub, idx) => (
+																			<li
+																				key={idx}
+																				className="flex items-center text-gray-700 hover:text-primary-700 transition-colors duration-200"
+																				style={{ animationDelay: `${idx * 100}ms` }}
+																			>
+																				<span className="inline-block w-2 h-2 bg-primary-300 rounded-full mr-2"></span>
+																				{sub}
+																			</li>
+																		))}
+																	</ul>
+																</div>
+															) : (
+																<p className="text-sm text-gray-500 italic bg-gray-50 p-3 rounded-lg animate-fadeIn">No substitutions available</p>
+															)}
+														</div>
+													)}
+												</div>
+											</li>
+										))}
+									</ul>
+
+									{/* Progress indicator */}
+									<div className="mt-4 bg-gray-200 rounded-full h-2.5 overflow-hidden">
+										<div
+											className="bg-primary-500 h-2.5 rounded-full transition-all duration-500 ease-out"
+											style={{
+												width: `${recipe.ingredients.filter(ing => checkedIngredients[ing.name]).length / recipe.ingredients.length * 100}%`
+											}}
+										></div>
+									</div>
+									<p className="text-sm text-center text-gray-600">
+										{recipe.ingredients.filter(ing => checkedIngredients[ing.name]).length} of {recipe.ingredients.length} ingredients checked
+									</p>
 								</div>
 							)}
 
@@ -493,18 +661,31 @@ const RecipeDetails = () => {
 						<h2 className="text-xl font-bold text-gray-800 mb-4">Quick Actions</h2>
 						<div className="space-y-3">
 							<button
+								onClick={handleStartCooking}
+								disabled={!areAllIngredientsAvailable}
+								className={`w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${areAllIngredientsAvailable
+									? 'bg-primary-600 text-white hover:bg-primary-700'
+									: 'bg-gray-300 text-gray-500 cursor-not-allowed'
+									}`}
+							>
+								<FiPlay />
+								Start Cooking
+							</button>
+							{!areAllIngredientsAvailable && (
+								<p className="text-sm text-gray-500 text-center">
+									Please check all ingredients before starting
+								</p>
+							)}
+							<button
 								onClick={addToGroceryList}
-								className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-all duration-300"
+								disabled={areAllIngredientsAvailable}
+								className={`w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${areAllIngredientsAvailable
+									? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+									: 'bg-primary-50 text-primary-700 hover:bg-primary-100'
+									}`}
 							>
 								<FiShoppingCart />
 								Add to Grocery List
-							</button>
-							<button
-								onClick={() => setIsFeedbackModalOpen(true)}
-								className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-primary-50 text-primary-700 rounded-xl hover:bg-primary-100 transition-all duration-300"
-							>
-								<FiMessageSquare />
-								Leave Feedback
 							</button>
 							<button
 								onClick={printRecipe}

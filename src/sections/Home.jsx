@@ -193,7 +193,7 @@ function Home() {
 	return (
 		<div className="space-y-12">
 			{/* Enhanced Hero Section */}
-			<section className="relative h-[90vh] rounded-2xl overflow-hidden">
+			<section className="relative h-[80vh] rounded-2xl overflow-hidden">
 				{/* Dynamic Background with Parallax Effect */}
 				<div className="absolute inset-0">
 					<img
@@ -210,7 +210,7 @@ function Home() {
 						<h1 className="text-5xl md:text-7xl font-bold text-white mb-4 animate-fade-in">
 							<span className="text-primary-400">Discover</span> Your Next
 							<br />
-							<span className="text-primary-400">Favorite</span> Meal
+							Favorite <span className="text-primary-400">Meal</span>
 						</h1>
 						<p className="text-xl md:text-2xl text-white/90 mb-8 animate-fade-in-up">
 							Find recipes based on your ingredients, dietary preferences, and cooking time

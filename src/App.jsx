@@ -11,6 +11,7 @@ import GroceryList from './sections/GroceryList';
 import RecipeDetails from './sections/RecipeDetails';
 import Recipes from './sections/Recipes';
 import WhatsInYourFridge from './sections/WhatsInYourFridge';
+import CookingAssistant from './sections/CookingAssistant';
 
 const navItems = [
   { path: '/', icon: <FiHome />, label: 'Home' },
@@ -27,7 +28,7 @@ function App() {
       <div className="min-h-screen bg-gray-50">
         <ToastContainer />
         <Navbar items={navItems} />
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto p-4">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/recipes" element={<Recipes />} />
@@ -36,6 +37,7 @@ function App() {
             <Route path="/meal-plan" element={<MealPlan />} />
             <Route path="/grocery-list" element={<GroceryList />} />
             <Route path="/recipe/:id" element={<RecipeDetails />} />
+            <Route path="/cooking-assistant/:id" element={<CookingAssistant />} />
           </Routes>
         </main>
       </div>
