@@ -1,9 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import {
-	FiMic, FiMicOff, FiVolume2, FiVolumeX, FiClock, FiPlay,
-	FiArrowLeft, FiHelpCircle, FiStar, FiUser
-} from 'react-icons/fi';
 import HelpModal from '../components/HelpModal';
 import TimerComponent from '../components/TimerComponent';
 import InstructionsCard from '../components/InstructionsCard';

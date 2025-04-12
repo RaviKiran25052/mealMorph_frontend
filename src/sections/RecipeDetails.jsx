@@ -5,7 +5,6 @@ import {
 	FiPrinter, FiMinus, FiPlus, FiThermometer, FiDroplet, FiZap, FiScissors, FiCoffee, FiList,
 	FiBookOpen, FiPieChart, FiCheckCircle, FiAlertCircle, FiLoader, FiPlay
 } from 'react-icons/fi';
-import FeedbackModal from '../components/FeedbackModal';
 
 const RecipeDetails = () => {
 	const { id } = useParams();
@@ -16,7 +15,6 @@ const RecipeDetails = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [recipe, setRecipe] = useState(null);
-	const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
 	const [checkedIngredients, setCheckedIngredients] = useState({});
 	const [showSubstitutions, setShowSubstitutions] = useState(false);
 	const [areAllIngredientsAvailable, setAreAllIngredientsAvailable] = useState(false);
@@ -137,19 +135,6 @@ const RecipeDetails = () => {
 		if (!value) return '0';
 		const scaledValue = ((value / recipe.servings) * servings).toFixed(1);
 		return scaledValue.replace(/\.0$/, '');
-	};
-
-	const handleFeedbackSubmit = (newFeedback) => {
-		setFeedbacks(prev => [newFeedback, ...prev]);
-		// Update the recipe's rating and rating count
-		const newRatingCount = recipe.ratingCount + 1;
-		const totalRating = recipe.rating * recipe.ratingCount + newFeedback.rating;
-		const newRating = (totalRating / newRatingCount).toFixed(1);
-		setRecipe(prev => ({
-			...prev,
-			rating: parseFloat(newRating),
-			ratingCount: newRatingCount
-		}));
 	};
 
 	const handleIngredientCheck = (ingredientId) => {
@@ -743,12 +728,6 @@ const RecipeDetails = () => {
 						</div>
 					</div>
 
-					{/* Feedback Modal */}
-					<FeedbackModal
-						isOpen={isFeedbackModalOpen}
-						onClose={() => setIsFeedbackModalOpen(false)}
-						onSubmit={handleFeedbackSubmit}
-					/>
 				</div>
 			</div>
 		</div>

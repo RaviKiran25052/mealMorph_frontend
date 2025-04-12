@@ -1,5 +1,6 @@
-import React from 'react';
-import { FiArrowLeft, FiVolume2, FiVolumeX, FiMic, FiMicOff, FiHelpCircle, FiClock, FiUser, FiStar, FiPlay } from 'react-icons/fi';
+import React, { useState } from 'react';
+import { FiArrowLeft, FiVolume2, FiVolumeX, FiMic, FiMicOff, FiHelpCircle, FiClock, FiUser, FiStar, FiPlay, FiMessageSquare } from 'react-icons/fi';
+import FeedbackModal from './FeedbackModal';
 
 const RecipeHeader = ({
 	recipe,
@@ -13,6 +14,13 @@ const RecipeHeader = ({
 	cookingStarted,
 	startCooking
 }) => {
+	const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+
+	const handleFeedbackSubmit = (newFeedback) => {
+		const newRatingCount = recipe.ratingCount + 1;
+		const totalRating = recipe.rating * recipe.ratingCount + newFeedback.rating;
+		const newRating = (totalRating / newRatingCount).toFixed(1);
+	};
 	return (
 		<div className="relative rounded-2xl shadow-xl mb-6 overflow-hidden">
 			{/* Recipe image as background */}
@@ -28,7 +36,7 @@ const RecipeHeader = ({
 			<div className="relative p-8 text-white z-10">
 				<div className="flex items-center justify-between mb-6">
 					<button
-						onClick={() => navigate(`/recipe/${id}`)}
+						onClick={() => navigate(-1)}
 						className="flex items-center gap-2 text-white hover:text-white/90 transition-colors bg-white/10 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10 shadow-lg"
 					>
 						<FiArrowLeft />
@@ -98,7 +106,19 @@ const RecipeHeader = ({
 							<FiStar className="text-yellow-300" />
 							<span>{recipe.rating} rating</span>
 						</div>
-						{!cookingStarted &&
+						{cookingStarted ?
+							<button
+								onClick={() => setIsFeedbackModalOpen(true)}
+								disabled={!cookingStarted}
+								className={`ml-auto px-5 py-2 rounded-xl transition-colors flex items-center gap-2 shadow-lg ${cookingStarted
+									? 'bg-primary-600 text-primary-50 hover:bg-primary-700'
+									: 'bg-gray-300 text-gray-500 cursor-not-allowed'
+									}`}
+							>
+								<FiMessageSquare />
+								Leave Feedback
+							</button>
+							:
 							<button
 								onClick={startCooking}
 								className="ml-auto bg-primary-500/90 backdrop-blur-md text-white px-5 py-2 rounded-xl font-medium text-sm hover:bg-primary-600 transition-colors flex items-center gap-2 shadow-lg border border-primary-400/30"
@@ -110,6 +130,11 @@ const RecipeHeader = ({
 					</div>
 				</div>
 			</div>
+			<FeedbackModal
+				isOpen={isFeedbackModalOpen}
+				onClose={() => setIsFeedbackModalOpen(false)}
+				onSubmit={handleFeedbackSubmit}
+			/>
 		</div>
 	);
 };
