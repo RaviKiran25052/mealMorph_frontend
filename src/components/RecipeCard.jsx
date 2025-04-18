@@ -6,7 +6,7 @@ import { GiMeat } from 'react-icons/gi';
 const RecipeCard = ({ recipe }) => {
 	return (
 		<Link
-			to={`/recipe/${recipe.id}`}
+			to={`/recipe/${recipe._id}`}
 			className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
 		>
 			<div className="relative h-48">
@@ -17,7 +17,7 @@ const RecipeCard = ({ recipe }) => {
 				/>
 				<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
 				<div className="absolute top-4 right-4">
-					{recipe.type === 'veg' ? (
+					{recipe.dishType === 'veg' ? (
 						<div className="bg-green-500 text-white p-2 rounded-full">
 							<FaLeaf className="w-5 h-5" />
 						</div>
@@ -35,7 +35,7 @@ const RecipeCard = ({ recipe }) => {
 				<div className="flex items-center gap-4 text-gray-600 mb-4">
 					<div className="flex items-center gap-1">
 						<FiClock className="w-4 h-4" />
-						<span className="text-sm">{recipe.cookingTime}</span>
+						<span className="text-sm">{recipe.cookTime} min</span>
 					</div>
 					<div className="flex items-center gap-1">
 						<FiUsers className="w-4 h-4" />
@@ -44,7 +44,7 @@ const RecipeCard = ({ recipe }) => {
 					<div className="flex items-center gap-1">
 						<FiStar className="w-4 h-4 text-yellow-400" />
 						<span className="text-sm">
-							{recipe.rating} ({recipe.ratingCount})
+							{recipe.feedback.rating} ({recipe.feedback.count})
 						</span>
 					</div>
 				</div>
