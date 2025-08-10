@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import RecipeCard from '../components/RecipeCard';
 import FilterBar from '../components/FilterBar';
 import { FiSearch, FiX } from 'react-icons/fi';
-import { toast } from 'react-toastify';
 import axios from 'axios';
 
 const dummy = [
@@ -14,8 +13,11 @@ const dummy = [
 		cookingTime: '30 mins',
 		servings: 2,
 		difficulty: 'Medium',
-		rating: 4.8,
-		ratingCount: 128,
+		feedback: {
+			rating: 4.5,
+			count: 120
+		},
+		dishType: 'veg',
 		category: 'breakfast',
 		type: 'veg',
 		ingredients: [
@@ -31,8 +33,11 @@ const dummy = [
 		cookingTime: '45 mins',
 		servings: 4,
 		difficulty: 'Medium',
-		rating: 4.7,
-		ratingCount: 156,
+		feedback: {
+			rating: 4.7,
+			count: 56
+		},
+		dishType: 'veg',
 		category: 'lunch',
 		type: 'veg',
 		ingredients: [
@@ -48,10 +53,12 @@ const dummy = [
 		cookingTime: '45 mins',
 		servings: 4,
 		difficulty: 'Medium',
-		rating: 4.9,
-		ratingCount: 215,
+		feedback: {
+			rating: 4.9,
+			count: 215
+		},
+		dishType: 'non-veg',
 		category: 'dinner',
-		type: 'non-veg',
 		ingredients: [
 			{ name: 'Chicken', quantity: '500g' },
 			{ name: 'Yogurt', quantity: '1 cup' },
@@ -65,8 +72,11 @@ const dummy = [
 		cookingTime: '40 mins',
 		servings: 6,
 		difficulty: 'Medium',
-		rating: 4.9,
-		ratingCount: 198,
+		feedback: {
+			rating: 4.5,
+			count: 120
+		},
+		dishType: 'veg',
 		category: 'desserts',
 		type: 'veg',
 		ingredients: [
@@ -82,8 +92,11 @@ const dummy = [
 		cookingTime: '50 mins',
 		servings: 4,
 		difficulty: 'Hard',
-		rating: 4.6,
-		ratingCount: 167,
+		feedback: {
+			rating: 4.5,
+			count: 120
+		},
+		dishType: 'veg',
 		category: 'snacks',
 		type: 'veg',
 		ingredients: [
@@ -99,8 +112,11 @@ const dummy = [
 		cookingTime: '35 mins',
 		servings: 4,
 		difficulty: 'Medium',
-		rating: 4.7,
-		ratingCount: 142,
+		feedback: {
+			rating: 4.5,
+			count: 120
+		},
+		dishType: 'veg',
 		category: 'vegetarian',
 		type: 'veg',
 		ingredients: [
@@ -116,10 +132,12 @@ const dummy = [
 		cookingTime: '60 mins',
 		servings: 4,
 		difficulty: 'Hard',
-		rating: 4.8,
-		ratingCount: 189,
-		category: 'non-vegetarian',
-		type: 'non-veg',
+		feedback: {
+			rating: 4.5,
+			count: 120
+		},
+		dishType: 'non-veg',
+		category: 'curries',
 		ingredients: [
 			{ name: 'Lamb', quantity: '500g' },
 			{ name: 'Yogurt', quantity: '1 cup' },
@@ -133,10 +151,12 @@ const dummy = [
 		cookingTime: '40 mins',
 		servings: 4,
 		difficulty: 'Medium',
-		rating: 4.6,
-		ratingCount: 134,
-		category: 'seafood',
-		type: 'non-veg',
+		feedback: {
+			rating: 4.5,
+			count: 120
+		},
+		dishType: 'non-veg',
+		category: 'curries',
 		ingredients: [
 			{ name: 'Fish', quantity: '500g' },
 			{ name: 'Coconut Milk', quantity: '1 cup' },
@@ -150,8 +170,11 @@ const dummy = [
 		cookingTime: '25 mins',
 		servings: 4,
 		difficulty: 'Easy',
-		rating: 4.5,
-		ratingCount: 156,
+		feedback: {
+			rating: 4.5,
+			count: 120
+		},
+		dishType: 'veg',
 		category: 'soups',
 		type: 'veg',
 		ingredients: [
@@ -167,10 +190,12 @@ const dummy = [
 		cookingTime: '45 mins',
 		servings: 4,
 		difficulty: 'Medium',
-		rating: 4.8,
-		ratingCount: 178,
+		feedback: {
+			rating: 4.5,
+			count: 120
+		},
+		dishType: 'non-veg',
 		category: 'curries',
-		type: 'non-veg',
 		ingredients: [
 			{ name: 'Chicken', quantity: '500g' },
 			{ name: 'Onions', quantity: '3 medium' },
@@ -183,7 +208,6 @@ const Recipes = () => {
 	const location = useLocation();
 	const [isToggleEnabled, setIsToggleEnabled] = useState(false);
 	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(null);
 	const [recipes, setRecipes] = useState([]);
 	const [filteredRecipes, setFilteredRecipes] = useState([]);
 	const [filters, setFilters] = useState({
@@ -205,8 +229,7 @@ const Recipes = () => {
 				setLoading(false);
 			} catch (err) {
 				console.error('Error fetching recipes:', err);
-				setError('Failed to load recipes. Please try again later.');
-				toast.error('Failed to load recipes');
+				setRecipes(dummy);
 				setLoading(false);
 			}
 		};
@@ -362,11 +385,7 @@ const Recipes = () => {
 				<div className="flex justify-center items-center h-64">
 					<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
 				</div>
-			) : error ? (
-				<div className="text-center text-red-600 py-8">
-					{error}
-				</div>
-			) : filteredRecipes.length === 0 ? (
+			): filteredRecipes.length === 0 ? (
 				<div className="text-center py-12">
 					<FiSearch className="mx-auto h-12 w-12 text-gray-400" />
 					<h3 className="mt-2 text-lg font-medium text-gray-900">No recipes found</h3>
