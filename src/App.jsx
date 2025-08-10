@@ -11,7 +11,7 @@ import RecipeDetails from './sections/RecipeDetails';
 import Recipes from './sections/Recipes';
 import WhatsInYourFridge from './sections/WhatsInYourFridge';
 import CookingAssistant from './sections/CookingAssistant';
-import Navbar from './components/Navbar';
+import NavBar from './components/NavBar';
 
 const navItems = [
   { path: '/', icon: <FiHome />, label: 'Home' },
@@ -27,7 +27,7 @@ function App() {
     <Router>
       <div className="min-h-screen bg-gray-50">
         <ToastContainer />
-        <Navbar items={navItems} />
+        <NavBar items={navItems} />
         <main className="container mx-auto p-4">
           <Routes>
             <Route path="/" element={<Home />} />
