@@ -3,7 +3,6 @@ import { ToastContainer } from 'react-toastify';
 import { FiHome, FiShoppingCart } from 'react-icons/fi';
 import { TbFridge, TbToolsKitchen3 } from 'react-icons/tb';
 import { MdOutlineCalendarMonth, MdOutlineSoupKitchen } from 'react-icons/md';
-import Navbar from './components/Navbar';
 import Home from './sections/Home';
 import MyKitchen from './sections/MyKitchen';
 import MealPlan from './sections/MealPlan';
@@ -12,6 +11,7 @@ import RecipeDetails from './sections/RecipeDetails';
 import Recipes from './sections/Recipes';
 import WhatsInYourFridge from './sections/WhatsInYourFridge';
 import CookingAssistant from './sections/CookingAssistant';
+import Navbar from './components/Navbar';
 
 const navItems = [
   { path: '/', icon: <FiHome />, label: 'Home' },
