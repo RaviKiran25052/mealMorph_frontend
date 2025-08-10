@@ -5,7 +5,7 @@ import AuthPopup from './AuthPopup';
 import { FaUser } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
-const Navbar = ({ items }) => {
+const NavBar = ({ items }) => {
 	const location = useLocation();
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
@@ -297,4 +297,4 @@ const Navbar = ({ items }) => {
 	);
 };
 
-export default Navbar;
+export default NavBar;
