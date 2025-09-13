@@ -20,6 +20,7 @@ const NavBar = ({ items }) => {
 		if (storedUser) {
 			setUser(JSON.parse(storedUser));
 			setIsLoggedIn(true);
+			
 			// TODO: Fetch actual grocery list count from API
 			setGroceryListCount(2); // Temporary hardcoded value
 		}
