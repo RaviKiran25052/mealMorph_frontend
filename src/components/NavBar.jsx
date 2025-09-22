@@ -15,6 +15,7 @@ const NavBar = ({ items }) => {
 	const [groceryListCount, setGroceryListCount] = useState(0);
 
 	useEffect(() => {
+		
 		// Check if user is logged in on component mount
 		const storedUser = localStorage.getItem('user');
 		if (storedUser) {
