@@ -1,11 +1,22 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { FiMenu, FiX, FiUser, FiLogOut, FiShoppingCart } from 'react-icons/fi';
+import { FiMenu, FiX, FiUser, FiHome, FiLogOut, FiShoppingCart } from 'react-icons/fi';
+import { TbFridge, TbToolsKitchen3 } from 'react-icons/tb';
+import { MdOutlineCalendarMonth, MdOutlineSoupKitchen } from 'react-icons/md';
 import AuthPopup from './AuthPopup';
 import { FaUser } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
-const NavBar = ({ items }) => {
+const NavBar = () => {
+	const navItems = [
+		{ path: '/', icon: <FiHome />, label: 'Home' },
+		{ path: '/recipes', icon: <TbToolsKitchen3 />, label: 'Recipes' },
+		{ path: '/whats-in-your-fridge', icon: <TbFridge />, label: "What's in Your Fridge?" },
+		{ path: '/my-kitchen', icon: <MdOutlineSoupKitchen />, label: 'My Kitchen' },
+		{ path: '/meal-plan', icon: <MdOutlineCalendarMonth />, label: 'Meal Plan' },
+		{ path: '/grocery-list', icon: <FiShoppingCart />, label: 'Grocery List' },
+	];
+	
 	const location = useLocation();
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
@@ -15,13 +26,13 @@ const NavBar = ({ items }) => {
 	const [groceryListCount, setGroceryListCount] = useState(0);
 
 	useEffect(() => {
-		
+
 		// Check if user is logged in on component mount
 		const storedUser = localStorage.getItem('user');
 		if (storedUser) {
 			setUser(JSON.parse(storedUser));
 			setIsLoggedIn(true);
-			
+
 			// TODO: Fetch actual grocery list count from API
 			setGroceryListCount(2); // Temporary hardcoded value
 		}
@@ -57,7 +68,7 @@ const NavBar = ({ items }) => {
 							</Link>
 						</div>
 						<div className="hidden md:flex items-center ml-10 space-x-8">
-							{items.map((item) => {
+							{navItems.map((item) => {
 								// Skip Grocery List, My Kitchen, and Meal Plan if not logged in
 								if ((item.label === 'Grocery List' || item.label === 'My Kitchen' || item.label === 'Meal Plan') && !isLoggedIn) {
 									return null;
@@ -113,7 +124,7 @@ const NavBar = ({ items }) => {
 										{/* Profile Dropdown */}
 										{isProfileMenuOpen && (
 											<>
-												<div 
+												<div
 													className="fixed inset-0 z-40"
 													onClick={() => setIsProfileMenuOpen(false)}
 												/>
@@ -214,7 +225,7 @@ const NavBar = ({ items }) => {
 
 						{/* Menu items */}
 						<div className="flex-1 overflow-y-auto py-4">
-							{items.map((item) => {
+							{navItems.map((item) => {
 								// Skip Grocery List, My Kitchen, and Meal Plan if not logged in
 								if ((item.label === 'Grocery List' || item.label === 'My Kitchen' || item.label === 'Meal Plan') && !isLoggedIn) {
 									return null;
