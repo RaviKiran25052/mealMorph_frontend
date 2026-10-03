@@ -9,8 +9,8 @@ const dummy = [
 	{
 		id: 1,
 		title: 'Masala Dosa',
-		image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-		cookingTime: '30 mins',
+		image: 'https://www.kaufmann.wtf/countries/images/recipes/india-masala-dosa.jpg',
+		cookTime: '30',
 		servings: 2,
 		difficulty: 'Medium',
 		feedback: {
@@ -29,8 +29,8 @@ const dummy = [
 	{
 		id: 2,
 		title: 'Rajma Chawal',
-		image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-		cookingTime: '45 mins',
+		image: 'https://www.gomill.in/menu/Rajma%20Chawal.png',
+		cookTime: '45',
 		servings: 4,
 		difficulty: 'Medium',
 		feedback: {
@@ -49,8 +49,8 @@ const dummy = [
 	{
 		id: 3,
 		title: 'Butter Chicken',
-		image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-		cookingTime: '45 mins',
+		image: 'https://images.deliveryhero.io/image/fd-ph/Products/63819540.jpg?width=%25s',
+		cookTime: '45',
 		servings: 4,
 		difficulty: 'Medium',
 		feedback: {
@@ -59,6 +59,7 @@ const dummy = [
 		},
 		dishType: 'non-veg',
 		category: 'dinner',
+		type: 'non-veg',
 		ingredients: [
 			{ name: 'Chicken', quantity: '500g' },
 			{ name: 'Yogurt', quantity: '1 cup' },
@@ -68,8 +69,8 @@ const dummy = [
 	{
 		id: 4,
 		title: 'Gulab Jamun',
-		image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-		cookingTime: '40 mins',
+		image: 'https://falasteenifoodie.com/wp-content/uploads/2024/11/DSC02405-2.jpg',
+		cookTime: '40',
 		servings: 6,
 		difficulty: 'Medium',
 		feedback: {
@@ -88,8 +89,8 @@ const dummy = [
 	{
 		id: 5,
 		title: 'Samosa',
-		image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-		cookingTime: '50 mins',
+		image: 'https://parade.com/.image/MTkwNTgwOTk5MzY1NzMxNDUz/Samosas.jpg?io=1&profile=w2560',
+		cookTime: '50',
 		servings: 4,
 		difficulty: 'Hard',
 		feedback: {
@@ -108,8 +109,8 @@ const dummy = [
 	{
 		id: 6,
 		title: 'Palak Paneer',
-		image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-		cookingTime: '35 mins',
+		image: 'https://assets-jpcust.jwpsrv.com/thumbnails/5kom3jse-1280.jpg',
+		cookTime: '35',
 		servings: 4,
 		difficulty: 'Medium',
 		feedback: {
@@ -128,8 +129,8 @@ const dummy = [
 	{
 		id: 7,
 		title: 'Rogan Josh',
-		image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-		cookingTime: '60 mins',
+		image: 'https://i0.wp.com/khyenchyen.net/wp-content/uploads/2022/06/Mutton-Rogan-Josh-by-PictureTheRecipe-1.jpg?resize=750%2C712&ssl=1',
+		cookTime: '60',
 		servings: 4,
 		difficulty: 'Hard',
 		feedback: {
@@ -138,6 +139,7 @@ const dummy = [
 		},
 		dishType: 'non-veg',
 		category: 'curries',
+		type: 'non-veg',
 		ingredients: [
 			{ name: 'Lamb', quantity: '500g' },
 			{ name: 'Yogurt', quantity: '1 cup' },
@@ -147,8 +149,8 @@ const dummy = [
 	{
 		id: 8,
 		title: 'Fish Curry',
-		image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-		cookingTime: '40 mins',
+		image: 'https://seafreshh.com/cookedDish/fishCurry.png',
+		cookTime: '40',
 		servings: 4,
 		difficulty: 'Medium',
 		feedback: {
@@ -157,6 +159,7 @@ const dummy = [
 		},
 		dishType: 'non-veg',
 		category: 'curries',
+		type: 'non-veg',
 		ingredients: [
 			{ name: 'Fish', quantity: '500g' },
 			{ name: 'Coconut Milk', quantity: '1 cup' },
@@ -166,8 +169,8 @@ const dummy = [
 	{
 		id: 9,
 		title: 'Rasam',
-		image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-		cookingTime: '25 mins',
+		image: 'https://www.hercircle.in/hcm/EngageImage/5FFBB1FF-1918-4E74-B4F1-5F3D866A7291/D/068129BF-F3C5-4DBC-86A5-B6169F8173DF.jpg',
+		cookTime: '25',
 		servings: 4,
 		difficulty: 'Easy',
 		feedback: {
@@ -186,8 +189,8 @@ const dummy = [
 	{
 		id: 10,
 		title: 'Chicken Curry',
-		image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-		cookingTime: '45 mins',
+		image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=800&q=80',
+		cookTime: '45',
 		servings: 4,
 		difficulty: 'Medium',
 		feedback: {
@@ -196,6 +199,7 @@ const dummy = [
 		},
 		dishType: 'non-veg',
 		category: 'curries',
+		type: 'non-veg',
 		ingredients: [
 			{ name: 'Chicken', quantity: '500g' },
 			{ name: 'Onions', quantity: '3 medium' },
@@ -223,9 +227,7 @@ const Recipes = () => {
 			try {
 				setLoading(true);
 				const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/mealmorph/recipes`);
-				setRecipes(response.data);
-				console.log(response.data[0]);
-				
+				setRecipes(response.data);				
 				setLoading(false);
 			} catch (err) {
 				console.error('Error fetching recipes:', err);
@@ -285,7 +287,7 @@ const Recipes = () => {
 				result.sort((a, b) => a.servings - b.servings);
 				break;
 			case 'time':
-				// Extract numeric value from cooking time string (e.g., "30 mins" -> 30)
+				// Extract numeric value from cooking time string (e.g., "30 min" -> 30)
 				result.sort((a, b) => {
 					const timeA = parseInt(a.cookTime);
 					const timeB = parseInt(b.cookTime);
