@@ -240,7 +240,7 @@ function Home() {
 					{categories.map((category, index) => (
 						<Link
 							key={category.name}
-							to={`/recipes?category=${category.name.toLowerCase()}`}
+							to={`/recipes?category=${category.name}`}
 							className="group relative h-48 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
 							style={{ animationDelay: `${index * 100}ms` }}
 						>
