@@ -1,4 +1,4 @@
-import { FiArrowRight, FiClock, FiInfo, FiHelpCircle } from 'react-icons/fi';
+import { FiArrowRight, FiClock, FiInfo } from 'react-icons/fi';
 
 const HelpModal = ({
 	isOpen,

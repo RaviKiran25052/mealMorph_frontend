@@ -15,11 +15,12 @@ const RecipeHeader = ({
 	startCooking
 }) => {
 	const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+	const [newRating, setNewRating] = useState(0);
 
 	const handleFeedbackSubmit = (newFeedback) => {
 		const newRatingCount = recipe.ratingCount + 1;
 		const totalRating = recipe.rating * recipe.ratingCount + newFeedback.rating;
-		const newRating = (totalRating / newRatingCount).toFixed(1);
+		setNewRating(totalRating / newRatingCount).toFixed(1);
 	};
 	return (
 		<div className="relative rounded-2xl shadow-xl mb-6 overflow-hidden">
@@ -104,7 +105,7 @@ const RecipeHeader = ({
 						</div>
 						<div className="flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-2 rounded-xl text-sm border border-white/10 shadow-lg">
 							<FiStar className="text-yellow-300" />
-							<span>{recipe.rating} rating</span>
+							<span>{newRating} rating</span>
 						</div>
 						{cookingStarted ?
 							<button
